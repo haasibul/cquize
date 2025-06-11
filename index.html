@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Custom Quiz Creator</title>
+</head>
+<body>
+  <h2>Create Your Custom Quiz</h2>
+
+  <form id="quizForm">
+    <label>Username:</label><br>
+    <input type="text" name="username" required><br><br>
+
+    <label>Quiz Question:</label><br>
+    <textarea name="question" required></textarea><br><br>
+
+    <label>Option A:</label><br>
+    <input type="text" name="optionA" required><br><br>
+
+    <label>Option B:</label><br>
+    <input type="text" name="optionB" required><br><br>
+
+    <label>Option C:</label><br>
+    <input type="text" name="optionC" required><br><br>
+
+    <label>Option D:</label><br>
+    <input type="text" name="optionD" required><br><br>
+
+    <label>Correct Answer:</label><br>
+    <select name="correct" required>
+      <option value="">Select</option>
+      <option value="A">Option A</option>
+      <option value="B">Option B</option>
+      <option value="C">Option C</option>
+      <option value="D">Option D</option>
+    </select><br><br>
+
+    <button type="submit">Submit Quiz</button>
+  </form>
+
+  <p id="responseMsg" style="color: green;"></p>
+
+</body>
+</html>
