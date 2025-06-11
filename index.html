@@ -37,7 +37,35 @@
     <button type="submit">Submit Quiz</button>
   </form>
 
-  <p id="responseMsg" style="color: green;"></p>
+  <p id="responseMsg" style="color: green;">x</p>
 
+  <script>
+    document.getElementById("quizForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+      const jsonData = {};
+
+      formData.forEach((value, key) => {
+        jsonData[key] = value;
+      });
+
+      fetch("https://script.google.com/macros/s/AKfycbw683djjhIGGornbK0QjgEoWK5NP7buEWedVcoreRy8OsNmGV37NYFQgF1Ul9gLEYmSBw/exec", {
+        method: "POST",
+        body: JSON.stringify(jsonData),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("responseMsg").innerText = "✅ Submitted successfully!";
+      })
+      .catch(error => {
+        document.getElementById("responseMsg").innerText = "❌ Submission failed.";
+        console.error(error);
+      });
+    });
+  </script>
 </body>
 </html>
