@@ -1,69 +1,130 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Custom Quiz Creator</title>
+  <meta charset="UTF-8">
+  <title>Create a Quiz</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #e0f0ff, #f0e0ff);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 30px 40px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      width: 400px;
+    }
+
+    h2 {
+      color: #3b3b98;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      transition: 0.3s;
+    }
+
+    input[type="text"]:focus {
+      border-color: #7f8ff4;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 25px;
+      background-color: #7f8ff4;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #5e6de3;
+    }
+
+    #status {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+      color: #3b3b98;
+    }
+  </style>
 </head>
 <body>
-  <h2>Create Your Custom Quiz</h2>
+  <div class="container">
+    <h2>Create a Quiz Question</h2>
+    <form id="quizForm">
+      <label>Quiz Creator:</label>
+      <input type="text" name="creator" required>
 
-  <form id="quizForm">
-    <label>Username:</label><br>
-    <input type="text" name="username" required><br><br>
+      <label>Question:</label>
+      <input type="text" name="question" required>
 
-    <label>Quiz Question:</label><br>
-    <textarea name="question" required></textarea><br><br>
+      <label>Option A:</label>
+      <input type="text" name="optionA" required>
 
-    <label>Option A:</label><br>
-    <input type="text" name="optionA" required><br><br>
+      <label>Option B:</label>
+      <input type="text" name="optionB" required>
 
-    <label>Option B:</label><br>
-    <input type="text" name="optionB" required><br><br>
+      <label>Correct Answer (A or B):</label>
+      <input type="text" name="correctAnswer" required>
 
-    <label>Option C:</label><br>
-    <input type="text" name="optionC" required><br><br>
-
-    <label>Option D:</label><br>
-    <input type="text" name="optionD" required><br><br>
-
-    <label>Correct Answer:</label><br>
-    <select name="correct" required>
-      <option value="">Select</option>
-      <option value="A">Option A</option>
-      <option value="B">Option B</option>
-      <option value="C">Option C</option>
-      <option value="D">Option D</option>
-    </select><br><br>
-
-    <button type="submit">Submit Quiz</button>
-  </form>
-
-  <p id="responseMsg" style="color: green;">x</p>
+      <button type="submit">Submit</button>
+    </form>
+    <p id="status"></p>
+  </div>
 
   <script>
     document.getElementById("quizForm").addEventListener("submit", function(e) {
       e.preventDefault();
+      const form = e.target;
+      const data = {
+        creator: form.creator.value,
+        question: form.question.value,
+        optionA: form.optionA.value,
+        optionB: form.optionB.value,
+        correctAnswer: form.correctAnswer.value
+      };
 
-      const formData = new FormData(this);
-      const jsonData = {};
-
-      formData.forEach((value, key) => {
-        jsonData[key] = value;
-      });
-
-      fetch("https://script.google.com/macros/s/AKfycbx6OVJn6iSG0JiRA6yR492-lcaGNvjyQ85HCSgIWtHjiBg5mrsFGzEfvV-NsJMvtZVi/exec", {
+      fetch("https://script.google.com/macros/s/AKfycbwi2VdkvSU_Z6l4SAA-ccb5igVLG53JO9y-TDtM2f4YWJSwEYgYlCWlQ9v9TYOWZi0h/exec", {
         method: "POST",
-        body: JSON.stringify(jsonData),
+        body: JSON.stringify(data),
         headers: {
           "Content-Type": "application/json"
         }
       })
-      .then(res => res.text())
-      .then(data => {
-        document.getElementById("responseMsg").innerText = "✅ Submitted successfully!";
+      .then(res => res.json())
+      .then(res => {
+        document.getElementById("status").innerText = "✅ Quiz submitted successfully!";
+        form.reset();
       })
-      .catch(error => {
-        document.getElementById("responseMsg").innerText = "❌ Submission failed.";
-        console.error(error);
+      .catch(() => {
+        document.getElementById("status").innerText = "❌ Error submitting quiz.";
       });
     });
   </script>
